@@ -4,167 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            height: 100vh;
-            display: flex;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        .image-side {
-            position: relative;
-            flex: 1;
-            display: none;
-        }
-        
-        .company-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 150, 136, 0.7);
-            clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
-        }
-        
-        .login-side {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            background-color: white;
-        }
-        
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 2rem;
-            text-align: center;
-        }
-        
-        .subtitle {
-            color: #777;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .input-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-        
-        .input-group svg {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #777;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 12px 12px 12px 40px;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            font-size: 1rem;
-        }
-        
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 1.5rem;
-        }
-        
-        .forgot-password a {
-            color: #777;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #00BFA6;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .login-btn:hover {
-            background-color: #00A896;
-        }
-        
-        .signup-text {
-            margin-top: 2rem;
-            text-align: center;
-            color: #777;
-            font-size: 0.9rem;
-        }
-        
-        .signup-text a {
-            color: #00BFA6;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            gap: 1rem;
-        }
-        
-        .social-icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f5f5f5;
-            color: #777;
-        }
-        
-        @media (min-width: 768px) {
-            .image-side {
-                display: block;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <div class="image-side">
-            <img src="/api/placeholder/800/600" alt="Company workspace" class="company-image">
+            <img src="https://cdn.www.gob.pe/uploads/document/file/288839/25212_foto.jpg20190205-25216-1cvhm5w.jpg" alt="Company workspace" class="company-image">
             <div class="overlay"></div>
         </div>
         
@@ -221,5 +66,7 @@
             </div>
         </div>
     </div>
+    <script type="module" src="main.mjs"></script>
+    <script type="module" src="domHandler.mjs"></script>
 </body>
 </html>
