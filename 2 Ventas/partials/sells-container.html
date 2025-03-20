@@ -1,0 +1,101 @@
+<div class="main-content">
+  <!-- Header Izquierda: Título y búsqueda -->
+  <div class="header-left">
+    <h1 class="header-title">Ventas</h1>
+    <div class="search-bar">
+      <div class="search-icon">🔍</div>
+      <input type="text" placeholder="Buscar productos...">
+    </div>
+  </div>
+
+  <!-- Header Derecha: Botones -->
+  <div class="header-right">
+    <button class="btn btn-primary">
+      <span class="icon" style="background-color: white; width: 16px; height: 16px;"></span>
+      Nueva venta
+    </button>
+    <button class="btn btn-secondary">
+      <span class="icon" style="width: 16px; height: 16px;"></span>
+      Nuevo gasto
+    </button>
+  </div>
+
+  <!-- Contenido Izquierdo: Categorías y Productos -->
+  <div class="content-left">
+    <!-- Categorías -->
+    <div class="categories">
+      <div class="category active">Todas</div>
+      <div class="category">Bebidas</div>
+      <div class="category">Alimentos</div>
+      <div class="category">Snacks</div>
+      <div class="category">Limpieza</div>
+      <div class="category">Electrónicos</div>
+    </div>
+
+    <!-- Lista de Productos -->
+    <div class="products-list" id="products-container">
+      <!-- Productos -->
+    </div>
+  </div>
+
+  <!-- Contenido Derecho: Cesta de productos -->
+  <div class="content-right">
+    <!-- Cabecera de la cesta -->
+    <div class="cart-header">
+      <h2 class="cart-title">Percuto</h2>
+      <button class="cart-view-btn">Ver canasta</button>
+    </div>
+
+    <!-- Elementos de la cesta -->
+    <div class="cart-items">
+      <!-- Producto en cesta 1 -->
+      <div class="cart-item">
+        <div class="cart-item-image">
+          <div class="icon" style="width: 30px; height: 30px;"></div>
+        </div>
+        <div class="cart-item-details">
+          <div class="cart-item-name">Producto 1</div>
+          <div class="cart-item-price">$25.00</div>
+        </div>
+        <div class="cart-item-actions">
+          <div class="quantity-control">
+            <button class="quantity-btn">-</button>
+            <span class="quantity">1</span>
+            <button class="quantity-btn">+</button>
+          </div>
+          <div class="remove-item">✕</div>
+        </div>
+      </div>
+
+      <!-- Producto en cesta 2 -->
+      <div class="cart-item">
+        <div class="cart-item-image">
+          <div class="icon" style="width: 30px; height: 30px;"></div>
+        </div>
+        <div class="cart-item-details">
+          <div class="cart-item-name">Producto 3</div>
+          <div class="cart-item-price">$15.50</div>
+        </div>
+        <div class="cart-item-actions">
+          <div class="quantity-control">
+            <button class="quantity-btn">-</button>
+            <span class="quantity">2</span>
+            <button class="quantity-btn">+</button>
+          </div>
+          <div class="remove-item">✕</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para continuar -->
+    <div class="cart-footer">
+      <button class="continue-btn">
+        <div class="continue-btn-info">
+          <div class="continue-btn-count">3 productos</div>
+          <div class="continue-btn-total">Bs. 56.00</div>
+        </div>
+        <div>→</div>
+      </button>
+    </div>
+  </div>
+</div>

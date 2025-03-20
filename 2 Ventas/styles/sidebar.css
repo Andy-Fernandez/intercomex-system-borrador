@@ -1,0 +1,156 @@
+/* Estilos del sidebar */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  padding: 16px;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.logo-section img {
+  width: 50px;
+  height: 50px;
+}
+
+.company-section {
+  background-color: #F2F5F7;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.company-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.company-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.company-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.company-name {
+  font-weight: bold;
+  color: #1A2732;
+  font-size: 14px;
+}
+
+.company-role {
+  color: #1A2732;
+  opacity: 0.8;
+  font-size: 12px;
+}
+
+.company-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.setting-item i {
+  margin-right: 10px;
+  color: #1A2732;
+}
+
+.setting-item span {
+  color: #1A2732;
+  font-size: 14px;
+}
+
+.tabs-section, .management-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.tab-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tab-item i {
+  margin-right: 10px;
+  color: #1A2732;
+}
+
+.tab-item span {
+  color: #1A2732;
+  font-size: 14px;
+}
+
+.tab-item.active {
+  background-color: #FFF0C2;
+}
+
+.tab-item.active span {
+  font-weight: bold;
+  color: #1A2732;
+}
+
+.logout-section {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid #eaeaea;
+}
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.logout-button i {
+  margin-right: 10px;
+  color: #dc3545;
+}
+
+.logout-button span {
+  color: #dc3545;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Para simular los iconos */
+i.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #1A2732;
+  border-radius: 4px;
+}

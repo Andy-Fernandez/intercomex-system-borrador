@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f0f0f0;
+}
+
+/* Layout principal */
+.app-container {
+  gap: 0px; 
+  display: grid; 
+  height: 100dvh; 
+  grid-template-columns: auto 1fr;
+}
+
+/* Para tamaños menores */
+@media (max-width: 1200px) {
+  .product-card {
+    width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
+    display: none;
+  }
+  
+  .main-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-right, .content-right {
+    display: none;
+  }
+  
+  .product-card {
+    width: 100%;
+  }
+}

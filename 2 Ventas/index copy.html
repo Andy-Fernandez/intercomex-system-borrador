@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Ventas</title>
+  <link rel="stylesheet" href="./styles/global.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Logo Section -->
+      <div class="logo-section sidebar-section">
+        <div class="icon" style="width: 50px; height: 50px; background-color: #1A2732; border-radius: 8px;"></div>
+      </div>
+
+      <!-- Company Information & Settings Section -->
+      <div class="company-section sidebar-section">
+        <div class="company-profile">
+          <div class="icon" style="width: 40px; height: 40px; background-color: #1A2732; border-radius: 50%;"></div>
+          <div class="company-info">
+            <span class="company-name">Mi Empresa</span>
+            <span class="company-role">Administrador</span>
+          </div>
+        </div>
+        <div class="company-settings">
+          <div class="setting-item">
+            <i class="icon"></i>
+            <span>Configuraciones</span>
+          </div>
+          <div class="setting-item">
+            <i class="icon"></i>
+            <span>Otro Negocio</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Section -->
+      <div class="tabs-section sidebar-section">
+        <div class="tab-item active">
+          <i class="icon"></i>
+          <span>Vender</span>
+        </div>
+        <div class="tab-item">
+          <i class="icon"></i>
+          <span>Movimientos</span>
+        </div>
+        <div class="tab-item">
+          <i class="icon"></i>
+          <span>Estadística</span>
+        </div>
+        <div class="tab-item">
+          <i class="icon"></i>
+          <span>Inventario</span>
+        </div>
+        <div class="tab-item">
+          <i class="icon"></i>
+          <span>Empleados</span>
+        </div>
+      </div>
+
+      <!-- Management Section -->
+      <div class="management-section sidebar-section">
+        <div class="tab-item">
+          <i class="icon"></i>
+          <span>Clientes</span>
+        </div>
+        <div class="tab-item">
+          <i class="icon"></i>
+          <span>Proveedores</span>
+        </div>
+      </div>
+
+      <!-- Logout Section -->
+      <div class="logout-section">
+        <div class="logout-button">
+          <i class="icon" style="background-color: #dc3545;"></i>
+          <span>Cerrar Sesión</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Principal de Ventas -->
+    <div class="main-content">
+      <!-- Header Izquierda: Título y búsqueda -->
+      <div class="header-left">
+        <h1 class="header-title">Ventas</h1>
+        <div class="search-bar">
+          <div class="search-icon">🔍</div>
+          <input type="text" placeholder="Buscar productos...">
+        </div>
+      </div>
+
+      <!-- Header Derecha: Botones -->
+      <div class="header-right">
+        <button class="btn btn-primary">
+          <span class="icon" style="background-color: white; width: 16px; height: 16px;"></span>
+          Nueva venta
+        </button>
+        <button class="btn btn-secondary">
+          <span class="icon" style="width: 16px; height: 16px;"></span>
+          Nuevo gasto
+        </button>
+      </div>
+
+      <!-- Contenido Izquierdo: Categorías y Productos -->
+      <div class="content-left">
+        <!-- Categorías -->
+        <div class="categories">
+          <div class="category active">Todas</div>
+          <div class="category">Bebidas</div>
+          <div class="category">Alimentos</div>
+          <div class="category">Snacks</div>
+          <div class="category">Limpieza</div>
+          <div class="category">Electrónicos</div>
+        </div>
+
+        <!-- Lista de Productos -->
+        <div class="products-list">
+          <!-- Producto 1 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="icon" style="width: 50px; height: 50px;"></div>
+            </div>
+            <div class="product-details">
+              <div class="product-name">Producto 1</div>
+              <div class="product-price">$25.00</div>
+              <div class="product-stock">Stock: 15 unidades</div>
+            </div>
+          </div>
+
+          <!-- Producto 2 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="icon" style="width: 50px; height: 50px;"></div>
+            </div>
+            <div class="product-details">
+              <div class="product-name">Producto 2</div>
+              <div class="product-price">$30.00</div>
+              <div class="product-stock">Stock: 8 unidades</div>
+            </div>
+          </div>
+
+          <!-- Producto 3 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="icon" style="width: 50px; height: 50px;"></div>
+            </div>
+            <div class="product-details">
+              <div class="product-name">Producto 3</div>
+              <div class="product-price">$15.50</div>
+              <div class="product-stock">Stock: 22 unidades</div>
+            </div>
+          </div>
+
+          <!-- Producto 4 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="icon" style="width: 50px; height: 50px;"></div>
+            </div>
+            <div class="product-details">
+              <div class="product-name">Producto 4</div>
+              <div class="product-price">$45.00</div>
+              <div class="product-stock">Stock: 5 unidades</div>
+            </div>
+          </div>
+
+          <!-- Producto 5 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="icon" style="width: 50px; height: 50px;"></div>
+            </div>
+            <div class="product-details">
+              <div class="product-name">Producto 5</div>
+              <div class="product-price">$18.75</div>
+              <div class="product-stock">Stock: 12 unidades</div>
+            </div>
+          </div>
+
+          <!-- Producto 6 -->
+          <div class="product-card">
+            <div class="product-image">
+              <div class="icon" style="width: 50px; height: 50px;"></div>
+            </div>
+            <div class="product-details">
+              <div class="product-name">Producto 6</div>
+              <div class="product-price">$22.50</div>
+              <div class="product-stock">Stock: 9 unidades</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido Derecho: Cesta de productos -->
+      <div class="content-right">
+        <!-- Cabecera de la cesta -->
+        <div class="cart-header">
+          <h2 class="cart-title">Percuto</h2>
+          <button class="cart-view-btn">Ver canasta</button>
+        </div>
+
+        <!-- Elementos de la cesta -->
+        <div class="cart-items">
+          <!-- Producto en cesta 1 -->
+          <div class="cart-item">
+            <div class="cart-item-image">
+              <div class="icon" style="width: 30px; height: 30px;"></div>
+            </div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">Producto 1</div>
+              <div class="cart-item-price">$25.00</div>
+            </div>
+            <div class="cart-item-actions">
+              <div class="quantity-control">
+                <button class="quantity-btn">-</button>
+                <span class="quantity">1</span>
+                <button class="quantity-btn">+</button>
+              </div>
+              <div class="remove-item">✕</div>
+            </div>
+          </div>
+
+          <!-- Producto en cesta 2 -->
+          <div class="cart-item">
+            <div class="cart-item-image">
+              <div class="icon" style="width: 30px; height: 30px;"></div>
+            </div>
+            <div class="cart-item-details">
+              <div class="cart-item-name">Producto 3</div>
+              <div class="cart-item-price">$15.50</div>
+            </div>
+            <div class="cart-item-actions">
+              <div class="quantity-control">
+                <button class="quantity-btn">-</button>
+                <span class="quantity">2</span>
+                <button class="quantity-btn">+</button>
+              </div>
+              <div class="remove-item">✕</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botón para continuar -->
+        <div class="cart-footer">
+          <button class="continue-btn">
+            <div class="continue-btn-info">
+              <div class="continue-btn-count">3 productos</div>
+              <div class="continue-btn-total">Bs. 56.00</div>
+            </div>
+            <div>→</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
