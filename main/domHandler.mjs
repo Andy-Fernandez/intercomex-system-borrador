@@ -37,7 +37,8 @@ if (loginForm) {
     if (findUser(userName, password)) {
       showMessage("✅ Inicio de sesión exitoso.", "success");
       setTimeout(() => {
-        window.location.href = "dashboard.html"; // Redirigir a una página después del login
+        console.log("Hi");  
+        window.location.href = "./pages/dashboard/dashboard.html"; // Redirigir a una página después del login
       }, 1500);
     } else {
       showMessage("❌ Usuario o contraseña incorrectos.");
