@@ -1,19 +1,25 @@
-<div class="product-item">
-  <div class="product-info">
-    <img src="/2 Ventas/assets/logo-difuminado.png" alt="{{nombre}}" class="product-image-cart">
-    <div class="product-text">
-      <div class="product-item-name">{{nombre}}</div>
-      <div class="product-stock">{{stock}} Disponibles</div>
+<div class="cart-item">
+  <div class="product-details">
+    <img src="/2 Ventas/assets/logo-difuminado.png" alt="{{nombre}}" class="cart-item-image">
+    <div class="product-info">
+      <div class="product-name">{{nombre}}</div>
+      <div class="product-stock">Stock: {{stock}}</div>
     </div>
-    <button class="delete-button">
-      <i class="fas fa-trash-alt"></i> 
+    <button class="remove-item-button">
+      <img src="/2 Ventas/assets/trash.svg" alt="Remove item" class="remove-item-image">
     </button>
   </div>
-  <div class="product-quantity">
-    <button class="quantity-button">-</button>
-    <div class="quantity">1</div>
-    <button class="quantity-button">+</button>
-    <div class="product-price-cart">{{precio}}</div>
+  <div class="product-quantity-controls">
+    <div class="quantity-controls">
+      <button class="quantity-button decrement-button">
+        <img src="/2 Ventas/assets/minus.svg" alt="">
+      </button>
+      <input type="text" class="quantity-input" value="1">
+      <button class="quantity-button increment-button">
+        <img src="/2 Ventas/assets/plus.svg" alt="">
+      </button>
+    </div>
+    <div class="item-price" contenteditable="true">Bs {{precio}}</div>
   </div>
-  <div class="total-price-cart">Precio por <span class="quantity">1</span> unidades: Bs 15</div>
+  <div class="item-total-price">Total: Bs 15</div>
 </div>

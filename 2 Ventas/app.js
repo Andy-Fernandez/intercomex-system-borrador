@@ -37,13 +37,13 @@ function cargarProductos(container) {
     return;
   }
   productos.forEach(producto => {
-    fetch('./partials/product.html')
+    fetch('./partials/product-card.html')
       .then(response => response.text())
       .then(data => {
         // Modificamos el contenido de la plantilla con la información del producto
-        let productoHTML = data.replace('{{nombre}}', producto.nombre)
-                                .replace('{{precio}}', `Bs ${producto.precio}`)
-                                .replace('{{stock}}', `${producto.stock} unidades`);
+        let productoHTML = data.replaceAll('{{nombre}}', producto.nombre)
+                                .replaceAll('{{precio}}', `Bs ${producto.precio}`)
+                                .replaceAll('{{stock}}', `${producto.stock} unidades`);
         container.innerHTML += productoHTML;
       })
       .catch(error => console.error('Error al cargar product.html:', error));

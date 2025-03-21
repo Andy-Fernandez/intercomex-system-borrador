@@ -6,8 +6,13 @@
   --color-verde: #0F935C;
   --color-error: #CB3E33;
   --color-texto: #1A2732;
+  --color-texto-intermedio: #394C60;
 }
 
+/* ::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+} */
 * {
   margin: 0;
   padding: 0;
