@@ -1,9 +1,9 @@
 /* Estilos de la sección principal de ventas */
 .main-content {
-  height: 100%;
+  height: 100vh;
   display: grid;
   background-color: white;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 64px 1fr;
   grid-template-columns: 1fr 400px;
 }
 
@@ -89,13 +89,13 @@
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  border-bottom: 1px solid #eaeaea;
 }
 
 .category {
   padding: 8px 15px;
-  background-color: #f0f0f0;
-  border-radius: 20px;
+  background-color: white;
+  border-radius: 0.25rem;
+  border: 2px solid var(--color-plomo-oscuro);
   font-size: 14px;
   white-space: nowrap;
   cursor: pointer;
@@ -103,8 +103,8 @@
 }
 
 .category.active {
-  background-color: #FFF0C2;
-  font-weight: bold;
+  background-color: var(--color-empresa);
+  border-color: var(--color-empresa);
 }
 
 /* Contenido derecho (cesta) */
@@ -118,7 +118,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eaeaea;
 }
 
 .cart-title {
