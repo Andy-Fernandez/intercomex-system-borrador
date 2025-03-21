@@ -20,8 +20,10 @@ function loadHTML() {
       document.getElementById('sells-container').innerHTML = data;
       // Cargar los productos
       const container = document.getElementById('products-container');
-      console.log(container);
+      const cart_container = document.getElementById('cart-container')
       cargarProductos(container); // Pasar el contenedor como argumento
+      // Productos del carrito
+      productoCarrito(cart_container);
     })
     .catch(error => console.error('Error al cargar sells-container:', error));
 }
@@ -39,7 +41,6 @@ function cargarProductos(container) {
       .then(response => response.text())
       .then(data => {
         // Modificamos el contenido de la plantilla con la información del producto
-        console.log(producto);
         let productoHTML = data.replace('{{nombre}}', producto.nombre)
                                 .replace('{{precio}}', `Bs ${producto.precio}`)
                                 .replace('{{stock}}', `${producto.stock} unidades`);
@@ -47,4 +48,23 @@ function cargarProductos(container) {
       })
       .catch(error => console.error('Error al cargar product.html:', error));
   });
+}
+
+function productoCarrito(cart_container){
+  if (!cart_container) {
+    console.error('products-container no encontrado.');
+    return;
+  }
+  productos.forEach(producto => {
+    fetch('./partials/producto-en-carrito.html')
+      .then(response => response.text())
+      .then(data => {
+        // Modificamos el contenido de la plantilla con la información del producto
+        let productoHTML = data.replaceAll('{{nombre}}', producto.nombre)
+                                .replace('{{precio}}', producto.precio)
+                                .replace('{{stock}}', producto.stock);
+        cart_container.innerHTML += productoHTML;
+      })
+      .catch(error => console.error('Error al cargar product.html:', error));
+  })
 }
