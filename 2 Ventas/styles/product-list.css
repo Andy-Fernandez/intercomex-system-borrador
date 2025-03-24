@@ -1,6 +1,8 @@
 .products-list {
-  display: flex;
-  flex-wrap: wrap;
+  /* display: flex;
+  flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(154px, 1fr));
   gap: 15px;
   padding: 20px;
   overflow-y: auto;
@@ -8,11 +10,16 @@
   /* justify-content: center; */
 }
 
+.product-card-containter{
+  height: auto;
+  width: 100%;
+}
+
 .product-card {
   width: 100%;
-  height: auto; /* Ajuste automático de altura */
-  min-width: 134px;
-  max-width: 174px;
+  height: 100%; /* Ajuste automático de altura */
+  min-width: 154px;
+  max-width: 184px;
   border: 1px solid #e0e0e0; /* Borde más sutil */
   border-radius: 12px;
   padding: 16px;
