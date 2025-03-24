@@ -132,9 +132,13 @@
 .cart-view-btn {
   background: none;
   border: none;
-  color: #4CAF50;
   cursor: pointer;
-  font-weight: bold;
+  color: var(--color-texto-intermedio);
+  font-family: var(--font-nunito, 'Helvetica', 'sans-serif', 'Arial');
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  text-decoration: underline;
 }
 
 /* Contenido de la cesta */
