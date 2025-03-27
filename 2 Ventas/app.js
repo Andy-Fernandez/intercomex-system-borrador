@@ -18,7 +18,8 @@ function loadHTML() {
       const cart_container = document.getElementById('cart-container');
       cargarProductos(container); // Cargamos los productos del inventario.
       productoCarrito(cart_container); // TEST: Cargamos productos del carrito
-      agregarEventosEliminar(); // Agregamos los eventos de eliminar
+      const removeButtons = document.querySelectorAll('.remove-item-button');
+      agregarEventosEliminar(removeButtons); // Agregamos los eventos de eliminar
     })
     .catch(error => console.error('Error al cargar sells-container:', error));
 }
@@ -70,8 +71,7 @@ function productoCarrito(cart_container){
   });
 }
 
-function agregarEventosEliminar() {
-  const removeButtons = document.querySelectorAll('.remove-item-button');
+function agregarEventosEliminar(removeButtons) {
   console.log(removeButtons);
   removeButtons.forEach((button, index) => {
     button.addEventListener('click', () => {

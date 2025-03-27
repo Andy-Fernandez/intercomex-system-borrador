@@ -1,13 +1,3 @@
-// export const productos = [
-//   { id: 1, nombre: 'Producto 1', precio: '25.00', stock: 15 },
-//   { id: 2, nombre: 'Producto 2', precio: '30.00', stock: 8 },
-//   { id: 3, nombre: 'Producto 3', precio: '15.50', stock: 22 },
-//   { id: 4, nombre: 'Producto 4', precio: '20.00', stock: 10 },
-//   { id: 5, nombre: 'Producto 5', precio: '35.00', stock: 5 },
-//   { id: 6, nombre: 'Producto 6', precio: '18.00', stock: 30 },
-//   { id: 7, nombre: 'Producto 6', precio: '18.00', stock: 30 },
-// ];
-
 export const productos = [
   {
     id: 1,
