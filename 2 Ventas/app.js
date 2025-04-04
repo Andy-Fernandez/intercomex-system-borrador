@@ -39,6 +39,7 @@ function cargarProductos(container) {
         // Modificamos el contenido de la plantilla con la información del producto
         let productoHTML = data.replaceAll('{{nombre}}', producto.nombre)
                                 .replaceAll('{{precio}}', `Bs ${producto.precioUnitario}`)
+                                .replaceAll('{{foto}}', producto.foto)
                                 .replaceAll('{{stock}}', `${producto.stock} unidades`);
         container.innerHTML += productoHTML;
       })
@@ -56,6 +57,7 @@ function productoCarrito(cart_container){
     nombre: producto.nombre,
     precio: producto.precioUnitario,
     cantidad: 1,
+    foto: producto.foto
   }));
 
   carrito.forEach(item => {
@@ -64,6 +66,7 @@ function productoCarrito(cart_container){
       .then(data => {
         let productoHTML = data.replaceAll('{{nombre}}', item.nombre)
                                 .replace('{{precio}}', item.precio)
+                                .replaceAll('{{foto}}', item.foto)
                                 .replace('{{stock}}', item.stock);
         cart_container.innerHTML += productoHTML;
       })
@@ -96,6 +99,7 @@ function actualizarCarritoHTML() {
           let productoHTML = data
             .replaceAll("{{nombre}}", item.nombre)
             .replace("{{precio}}", item.precio)
+            .replaceAll('{{foto}}', item.foto)
             .replace('value="1"', `value="${item.cantidad}"`);
           cartContainer.innerHTML += productoHTML;
         })
