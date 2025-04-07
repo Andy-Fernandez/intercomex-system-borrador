@@ -1,114 +1,166 @@
 // main.js
 import { productos } from './data_base.js';
 
-let carrito = []; // Inicializamos el array carrito
+let carrito = []; // Array global del carrito
+let cartTemplateHTML = null; // Plantilla global para productos en el carrito
 
-function loadHTML() {
-  fetch('./partials/sidebar.html')
-    .then(response => response.text())
-    .then(data => document.getElementById('sidebar-container').innerHTML = data)
-    .catch(error => console.error('Error al cargar sidebar:', error));
+// Función helper para cargar un fragmento HTML en un contenedor por su ID
+async function loadPartial(url, containerId) {
+  try {
+    const response = await fetch(url);
+    const html = await response.text();
+    document.getElementById(containerId).innerHTML = html;
+  } catch (error) {
+    console.error(`Error al cargar ${url}:`, error);
+  }
+}
 
-  fetch('./partials/sells-container.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('sells-container').innerHTML = data;
-      // Cargar los productos
-      const container = document.getElementById('products-container');
-      const cart_container = document.getElementById('cart-container');
-      cargarProductos(container); // Cargamos los productos del inventario.
-      productoCarrito(cart_container); // TEST: Cargamos productos del carrito
-      const removeButtons = document.querySelectorAll('.remove-item-button');
-      agregarEventosEliminar(removeButtons); // Agregamos los eventos de eliminar
-    })
-    .catch(error => console.error('Error al cargar sells-container:', error));
+// Función principal para cargar la interfaz
+async function loadHTML() {
+  // Cargar sidebar y sells-container en paralelo
+  await Promise.all([
+    loadPartial('./partials/sidebar.html', 'sidebar-container'),
+    loadPartial('./partials/sells-container.html', 'sells-container')
+  ]);
+
+  // Una vez cargado sells-container, renderizamos los productos y el carrito
+  const productsContainer = document.getElementById('products-container');
+  const cartContainer = document.getElementById('cart-container');
+
+  await Promise.all([
+    cargarProductos(productsContainer),
+    productoCarrito(cartContainer)
+  ]);
+
+  // Asignar eventos de eliminación a los botones encontrados
+  const removeButtons = document.querySelectorAll('.remove-item-button');
+  agregarEventosEliminar(removeButtons);
 }
 
 window.onload = loadHTML;
 
-// Función para cargar los productos (ahora recibe el contenedor)
-function cargarProductos(container) {
+// Función para cargar y renderizar las tarjetas de producto
+async function cargarProductos(container) {
   if (!container) {
     console.error('products-container no encontrado.');
     return;
   }
-  productos.forEach(producto => {
-    fetch('./partials/product-card.html')
-      .then(response => response.text())
-      .then(data => {
-        // Modificamos el contenido de la plantilla con la información del producto
-        let productoHTML = data.replaceAll('{{nombre}}', producto.nombre)
-                                .replaceAll('{{precio}}', `Bs ${producto.precioUnitario}`)
-                                .replaceAll('{{foto}}', producto.foto)
-                                .replaceAll('{{stock}}', `${producto.stock} unidades`);
-        container.innerHTML += productoHTML;
-      })
-      .catch(error => console.error('Error al cargar product.html:', error));
-  });
-}
-
-function productoCarrito(cart_container){
-  if (!cart_container) {
-    console.error('products-container no encontrado.');
+  
+  let templateHTML = '';
+  try {
+    const response = await fetch('./partials/product-card.html');
+    templateHTML = await response.text();
+  } catch (error) {
+    console.error('Error al cargar product-card.html:', error);
     return;
   }
-  carrito = productos.map(producto => ({ // Usamos map para crear el array carrito
+  
+  const fragment = document.createDocumentFragment();
+  productos.forEach(producto => {
+    // Reemplazamos los marcadores de posición por los datos del producto
+    let productoHTML = templateHTML
+      .replaceAll('{{nombre}}', producto.nombre)
+      .replaceAll('{{precio}}', `Bs ${producto.precioUnitario}`)
+      .replaceAll('{{foto}}', producto.foto)
+      .replaceAll('{{stock}}', `${producto.stock} unidades`);
+    
+    // Convertimos el HTML en nodos y los agregamos al fragment
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = productoHTML;
+    while (tempDiv.firstChild) {
+      fragment.appendChild(tempDiv.firstChild);
+    }
+  });
+  container.appendChild(fragment);
+}
+
+// Función para cargar y renderizar los productos del carrito
+async function productoCarrito(cart_container) {
+  if (!cart_container) {
+    console.error('cart-container no encontrado.');
+    return;
+  }
+  
+  // Inicializar el carrito con los productos (puedes ajustarlo según tu lógica)
+  carrito = productos.map(producto => ({
     producto_id: producto.id,
     nombre: producto.nombre,
     precio: producto.precioUnitario,
     cantidad: 1,
-    foto: producto.foto
+    foto: producto.foto,
+    stock: producto.stock
   }));
-
-  carrito.forEach(item => {
-    fetch('./partials/producto-en-carrito.html')
-      .then(response => response.text())
-      .then(data => {
-        let productoHTML = data.replaceAll('{{nombre}}', item.nombre)
-                                .replace('{{precio}}', item.precio)
-                                .replaceAll('{{foto}}', item.foto)
-                                .replace('{{stock}}', item.stock);
-        cart_container.innerHTML += productoHTML;
-      })
-      .catch(error => console.error('Error al cargar product.html:', error));
-  });
+  
+  // Cargar la plantilla para los productos del carrito (se hace una sola vez)
+  try {
+    const response = await fetch('./partials/producto-en-carrito.html');
+    cartTemplateHTML = await response.text();
+  } catch (error) {
+    console.error('Error al cargar producto-en-carrito.html:', error);
+    return;
+  }
+  
+  // Renderizamos el carrito inicial
+  actualizarCarritoHTML();
 }
 
+// Función para asignar los eventos de eliminación a los botones del carrito
 function agregarEventosEliminar(removeButtons) {
-  console.log(removeButtons);
+  if (!removeButtons) return;
   removeButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
-      alert("hola");
-      carrito.splice(index, 1); // Elimina el producto del array carrito
-      actualizarCarritoHTML(); // Actualiza el carrito en el DOM
-      actualizarTotal(); // Actualiza el total
-      actualizarContadorProductos(); // Actualiza el contador de productos
-      guardarCarritoEnLocalStorage(); // Guarda el carrito en localStorage
+      // alert("Producto eliminado del carrito");
+      // En este ejemplo se usa el índice; podrías usar un data-attribute para mayor precisión
+      carrito.splice(index, 1);
+      actualizarCarritoHTML();
+      actualizarTotal();
+      actualizarContadorProductos();
+      guardarCarritoEnLocalStorage();
     });
   });
 }
 
-function actualizarCarritoHTML() {
+// Función para actualizar la interfaz del carrito
+async function actualizarCarritoHTML() {
   const cartContainer = document.getElementById("cart-container");
-  if (cartContainer) {
-    cartContainer.innerHTML = "";
-    carrito.forEach((item) => {
-      fetch("./partials/producto-en-carrito.html")
-        .then((response) => response.text())
-        .then((data) => {
-          let productoHTML = data
-            .replaceAll("{{nombre}}", item.nombre)
-            .replace("{{precio}}", item.precio)
-            .replaceAll('{{foto}}', item.foto)
-            .replace('value="1"', `value="${item.cantidad}"`);
-          cartContainer.innerHTML += productoHTML;
-        })
-        .catch((error) => console.error("Error al cargar product.html:", error));
-    });
-    agregarEventosEliminar(); // Re-agregamos los eventos de eliminar después de actualizar el HTML
+  if (!cartContainer) return;
+  cartContainer.innerHTML = "";
+  
+  // Si la plantilla no se cargó aún, la obtenemos
+  if (!cartTemplateHTML) {
+    try {
+      const response = await fetch('./partials/producto-en-carrito.html');
+      cartTemplateHTML = await response.text();
+    } catch (error) {
+      console.error('Error al cargar producto-en-carrito.html:', error);
+      return;
+    }
   }
+  
+  const fragment = document.createDocumentFragment();
+  carrito.forEach(item => {
+    let productoHTML = cartTemplateHTML
+      .replaceAll("{{nombre}}", item.nombre)
+      .replace("{{precio}}", item.precio)
+      .replaceAll('{{foto}}', item.foto)
+      .replaceAll('{{stock}}', `${item.stock}`)
+      // Actualizamos la cantidad en el input, suponiendo que el template tenga value="1"
+      .replace('value="1"', `value="${item.cantidad}"`);
+    
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = productoHTML;
+    while (tempDiv.firstChild) {
+      fragment.appendChild(tempDiv.firstChild);
+    }
+  });
+  cartContainer.appendChild(fragment);
+  
+  // Re-asignar eventos de eliminación a los botones recién creados
+  const removeButtons = cartContainer.querySelectorAll('.remove-item-button');
+  agregarEventosEliminar(removeButtons);
 }
 
+// Función para actualizar el total del carrito
 function actualizarTotal() {
   const totalElement = document.querySelector(".continue-btn-total");
   if (totalElement) {
@@ -117,6 +169,7 @@ function actualizarTotal() {
   }
 }
 
+// Función para actualizar el contador de productos en el carrito
 function actualizarContadorProductos() {
   const contadorElement = document.querySelector(".continue-btn-count");
   if (contadorElement) {
@@ -125,6 +178,7 @@ function actualizarContadorProductos() {
   }
 }
 
+// Función para guardar el carrito en LocalStorage
 function guardarCarritoEnLocalStorage() {
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
