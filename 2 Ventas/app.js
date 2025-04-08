@@ -1,5 +1,6 @@
 // main.js
 import { productos } from './data_base.js';
+import { cargarProductos } from './renderProducts.js';
 
 let carrito = []; // Array global del carrito
 let cartTemplateHTML = null; // Plantilla global para productos en el carrito
@@ -37,42 +38,10 @@ async function loadHTML() {
   agregarEventosEliminar(removeButtons);
 }
 
-window.onload = loadHTML;
-
-// Función para cargar y renderizar las tarjetas de producto
-async function cargarProductos(container) {
-  if (!container) {
-    console.error('products-container no encontrado.');
-    return;
-  }
-  
-  let templateHTML = '';
-  try {
-    const response = await fetch('./partials/product-card.html');
-    templateHTML = await response.text();
-  } catch (error) {
-    console.error('Error al cargar product-card.html:', error);
-    return;
-  }
-  
-  const fragment = document.createDocumentFragment();
-  productos.forEach(producto => {
-    // Reemplazamos los marcadores de posición por los datos del producto
-    let productoHTML = templateHTML
-      .replaceAll('{{nombre}}', producto.nombre)
-      .replaceAll('{{precio}}', `Bs ${producto.precioUnitario}`)
-      .replaceAll('{{foto}}', producto.foto)
-      .replaceAll('{{stock}}', `${producto.stock} unidades`);
-    
-    // Convertimos el HTML en nodos y los agregamos al fragment
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = productoHTML;
-    while (tempDiv.firstChild) {
-      fragment.appendChild(tempDiv.firstChild);
-    }
-  });
-  container.appendChild(fragment);
-}
+// Asegurarse de que el DOM esté completamente cargado antes de ejecutar loadHTML
+document.addEventListener('DOMContentLoaded', () => {
+  loadHTML();
+});
 
 // Función para cargar y renderizar los productos del carrito
 async function productoCarrito(cart_container) {
@@ -81,7 +50,7 @@ async function productoCarrito(cart_container) {
     return;
   }
   
-  // Inicializar el carrito con los productos (puedes ajustarlo según tu lógica)
+  // Inicializar el carrito con los productos
   carrito = productos.map(producto => ({
     producto_id: producto.id,
     nombre: producto.nombre,
