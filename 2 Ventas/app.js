@@ -1,7 +1,13 @@
 // app.js
 import { productos } from './data_base.js';
 import { cargarProductos } from './renderProducts.js';
-import { productoCarrito, agregarEventosEliminar } from './cart.js';
+import { productoCarrito,
+  asignarEventosDeEliminacion,
+  actualizarTotal,
+  actualizarContadorProductos,
+  guardarCarritoEnLocalStorage
+} from './cart.js';
+
 
 // Función helper para cargar un fragmento HTML en un contenedor por su ID
 async function loadPartial(url, containerId) {
@@ -33,7 +39,7 @@ async function loadHTML() {
 
   // Asignar eventos de eliminación a los botones encontrados
   const removeButtons = document.querySelectorAll('.remove-item-button');
-  agregarEventosEliminar(removeButtons);
+  asignarEventosDeEliminacion(removeButtons);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
