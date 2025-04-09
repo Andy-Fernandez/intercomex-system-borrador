@@ -81,7 +81,7 @@ export async function actualizarCarritoHTML() {
   carrito.forEach(item => {
     // Es importante que el HTML tenga un atributo data con el id del producto para identificarlo en los event handlers.
     const totalItem = calcularTotalItem(item.producto_id);
-    
+
     let productoHTML = cartTemplateHTML
       .replaceAll("{{producto_id}}", item.producto_id)
       .replaceAll("{{nombre}}", item.nombre)
@@ -103,6 +103,7 @@ export async function actualizarCarritoHTML() {
   const removeButtons = cartContainer.querySelectorAll('.remove-item-button');
   asignarEventosDeEliminacion(removeButtons);
   asignarEventosCantidad(cartContainer);
+  asignarEventosCambioPrecio(cartContainer);
 }
 
 /**
@@ -195,8 +196,55 @@ export function actualizarContadorProductos() {
 }
 
 /**
- * Guarda el carrito en LocalStorage.
+ * Guarda el estado actual del carrito en LocalStorage.
+ * Se utiliza para mantener persistencia entre sesiones del usuario.
  */
 export function guardarCarritoEnLocalStorage() {
   localStorage.setItem("carrito", JSON.stringify(carrito));
 }
+
+/**
+ * Asigna los eventos necesarios para permitir la edición del precio de productos
+ * directamente desde el carrito (campo editable).
+ * Permite aplicar el cambio tanto al perder el foco como al presionar Enter.
+ *
+ * @param {HTMLElement} cartContainer - Elemento contenedor del carrito.
+ */
+export function asignarEventosCambioPrecio(cartContainer) {
+  const priceFields = cartContainer.querySelectorAll('.item-price');
+
+  priceFields.forEach(field => {
+    // Aplica el cambio cuando se pierde el foco del campo
+    field.addEventListener('blur', (e) => {
+      procesarCambioPrecio(e.target);
+    });
+
+    // Aplica el cambio al presionar Enter
+    field.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault(); // Evita salto de línea en contenteditable
+        procesarCambioPrecio(e.target);
+        e.target.blur(); // Fuerza pérdida de foco para reflejar el cambio
+      }
+    });
+  });
+}
+
+/**
+ * Procesa la actualización del precio de un ítem del carrito a partir de un campo editable.
+ *
+ * @param {HTMLElement} elemento - Elemento DOM editable que contiene el nuevo precio.
+ */
+function procesarCambioPrecio(elemento) {
+  const nuevoPrecio = parseFloat(elemento.textContent.replace('Bs', '').trim());
+  if (!isNaN(nuevoPrecio)) {
+    const cartItem = elemento.closest('.cart-item');
+    const productId = Number(cartItem.getAttribute('data-producto-id'));
+    actualizarPrecio(productId, nuevoPrecio);
+    actualizarCarritoHTML();
+    actualizarTotal();
+    actualizarContadorProductos();
+    guardarCarritoEnLocalStorage();
+  }
+}
+
