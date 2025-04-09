@@ -31,6 +31,7 @@ export async function productoCarrito(cart_container) {
   }
   
   // Inicializa el carrito a partir de la base de datos ficticia
+  // Esta parte debería ser reemplazada por el carrito real que se cargará desde el servidor
   carrito = productos.map(producto => ({
     producto_id: producto.id,
     nombre: producto.nombre,
@@ -79,19 +80,17 @@ export async function actualizarCarritoHTML() {
   const fragment = document.createDocumentFragment();
   carrito.forEach(item => {
     // Es importante que el HTML tenga un atributo data con el id del producto para identificarlo en los event handlers.
+    const totalItem = calcularTotalItem(item.producto_id);
+    
     let productoHTML = cartTemplateHTML
+      .replaceAll("{{producto_id}}", item.producto_id)
       .replaceAll("{{nombre}}", item.nombre)
       .replace("{{precio}}", item.precio)
       .replaceAll('{{foto}}', item.foto)
       .replaceAll('{{stock}}', `${item.stock}`)
-      .replace('value="1"', `value="${item.cantidad}"`);
+      .replaceAll('{{cantidad}}', `${item.cantidad}`)
+      .replace('{{totalItem}}', totalItem.toFixed(2));
 
-    // Agregamos un atributo custom 'data-producto-id' para identificar el producto.
-    productoHTML = productoHTML.replace(
-      '<div class="cart-item">',
-      `<div class="cart-item" data-producto-id="${item.producto_id}">`
-    );
-    
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = productoHTML;
     while (tempDiv.firstChild) {
@@ -125,7 +124,7 @@ export function asignarEventosDeEliminacion(removeButtons) {
 
 /**
  * Asigna eventos a los controles de cantidad: botones increment, decrement y el input.
- * Se asume que cada .cart-item tiene el atributo data-producto-id.
+ * Usamos el atributo data-producto-id.
  */
 export function asignarEventosCantidad(cartContainer) {
   // Botones para incrementar y decrementar cantidad
@@ -141,8 +140,8 @@ export function asignarEventosCantidad(cartContainer) {
       incrementarCantidad(productId);
       actualizarCarritoHTML(); // Re-renderizamos el carrito (o solo el ítem si optimizamos)
       actualizarTotal();
-    actualizarContadorProductos();
-    guardarCarritoEnLocalStorage();
+      actualizarContadorProductos();
+      guardarCarritoEnLocalStorage();
     });
   });
 

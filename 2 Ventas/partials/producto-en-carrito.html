@@ -1,4 +1,5 @@
-<div class="cart-item">
+<!-- producto-en-carrito.html -->
+<div class="cart-item" data-producto-id="{{producto_id}}">
   <div class="product-details">
     <img src="{{foto}}" alt="{{nombre}}" class="cart-item-image">
     <div class="product-info">
@@ -14,12 +15,12 @@
       <button class="quantity-button decrement-button">
         <img src="/2 Ventas/assets/minus.svg" alt="">
       </button>
-      <input type="text" class="quantity-input" value="1">
+      <input type="text" class="quantity-input" value="{{cantidad}}">
       <button class="quantity-button increment-button">
         <img src="/2 Ventas/assets/plus.svg" alt="">
       </button>
     </div>
     <div class="item-price" contenteditable="true">Bs {{precio}}</div>
   </div>
-  <div class="item-total-price">Total: Bs 15</div>
+  <div class="item-total-price">Total: Bs {{totalItem}}</div>
 </div>
