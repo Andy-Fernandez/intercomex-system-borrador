@@ -111,6 +111,7 @@ export async function actualizarCarritoHTML() {
   asignarEventosDeEliminacion(removeButtons);
   asignarEventosCantidad(cartContainer);
   asignarEventosCambioPrecio(cartContainer);
+  asignarEventoReinicioCarrito();
 }
 
 /**
@@ -255,3 +256,36 @@ function procesarCambioPrecio(elemento) {
   }
 }
 
+
+// TODO: Esto se genero para la prueba, corregir para una correcta implementación.
+/**
+ * Confirma la venta actual y limpia el carrito y localStorage.
+ * Se debe llamar al finalizar una venta exitosa.
+ */
+export function confirmarVenta() {
+  // Limpiar el carrito y localStorage
+  carrito = [];
+  localStorage.removeItem("carrito");
+
+  // Limpiar interfaz
+  actualizarCarritoHTML();
+  actualizarTotal();
+  actualizarContadorProductos();
+
+  // Puedes mostrar un mensaje de éxito si deseas
+  alert("¡Venta confirmada exitosamente!");
+}
+
+/**
+ * TEMPORAL PARA TEST: Asigna el evento para reiniciar el carrito.
+ * Lo que realmente hace es que llena al producto con todos los productos de la base de datos.
+ */
+export function asignarEventoReinicioCarrito() {
+  const reiniciarButton = document.querySelector('.cart-view-btn');
+  if (reiniciarButton) {
+    reiniciarButton.addEventListener('click', () => {
+      alert("Reiniciando carrito...");
+      confirmarVenta();
+    });
+  }
+}
