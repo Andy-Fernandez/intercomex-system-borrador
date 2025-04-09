@@ -29,17 +29,22 @@ export async function productoCarrito(cart_container) {
     console.error('cart-container no encontrado.');
     return;
   }
-  
-  // Inicializa el carrito a partir de la base de datos ficticia
-  // Esta parte debería ser reemplazada por el carrito real que se cargará desde el servidor
-  carrito = productos.map(producto => ({
-    producto_id: producto.id,
-    nombre: producto.nombre,
-    precio: producto.precioUnitario,
-    cantidad: 1,
-    foto: producto.foto,
-    stock: producto.stock
-  }));
+
+  // ✅ Recuperar el carrito desde localStorage si existe
+  const carritoGuardado = localStorage.getItem("carrito");
+  if (carritoGuardado) {
+    carrito = JSON.parse(carritoGuardado);
+  } else {
+    // Si no hay nada en localStorage, inicializamos desde productos
+    carrito = productos.map(producto => ({
+      producto_id: producto.id,
+      nombre: producto.nombre,
+      precio: producto.precioUnitario,
+      cantidad: 1,
+      foto: producto.foto,
+      stock: producto.stock
+    }));
+  }
   
   // Cargar la plantilla HTML para un ítem del carrito
   try {
@@ -51,6 +56,8 @@ export async function productoCarrito(cart_container) {
   }
   
   actualizarCarritoHTML();
+  actualizarTotal();
+  actualizarContadorProductos();
 }
 
 /**
