@@ -1,7 +1,7 @@
 // app.js
 import { productos } from './data_base.js';
 import { cargarProductos } from './renderProducts.js';
-import { productoCarrito,
+import { inicializarCarrito,
   asignarEventosDeEliminacion,
   actualizarTotal,
   actualizarContadorProductos,
@@ -34,7 +34,7 @@ async function loadHTML() {
 
   await Promise.all([
     cargarProductos(productsContainer),
-    productoCarrito(cartContainer)
+    inicializarCarrito(cartContainer)
   ]);
 }
 

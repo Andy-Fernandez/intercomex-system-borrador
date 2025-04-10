@@ -1,5 +1,5 @@
 // cart.js
-import { productos } from './data_base.js';
+import { getProductos, actualizarStock } from './data_base.js';
 // Importamos nuestras funciones helper (más adelante las usaremos en los event handlers)
 import {
   incrementarCantidad,
@@ -8,9 +8,12 @@ import {
   actualizarPrecio,
   calcularTotalItem
 } from './cartHelpers.js';
+import { cargarProductos } from './renderProducts.js';
+import { actualizarProductos } from './renderProducts.js';
 
 let carrito = [];
 let cartTemplateHTML = "";
+
 
 /**
  * Getter para obtener el carrito actual.
@@ -24,7 +27,7 @@ export function getCarrito() {
  * Inicializa y renderiza el carrito con los productos.
  * @param {HTMLElement} cart_container - Elemento donde se renderizará el carrito.
  */
-export async function productoCarrito(cart_container) {
+export async function inicializarCarrito(cart_container) {
   if (!cart_container) {
     console.error('cart-container no encontrado.');
     return;
@@ -36,6 +39,7 @@ export async function productoCarrito(cart_container) {
     carrito = JSON.parse(carritoGuardado);
   } else {
     // Si no hay nada en localStorage, inicializamos desde productos
+    const productos = getProductos();
     carrito = productos.map(producto => ({
       producto_id: producto.id,
       nombre: producto.nombre,
@@ -121,12 +125,24 @@ export function asignarEventosDeEliminacion(removeButtons) {
   if (!removeButtons) return;
   removeButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
+      // Tenemos que aumentar el stock del producto eliminado
+      const productoEliminado = carrito[index];
+      const productos = getProductos();
+      const productoOriginal = productos.find(p => p.id === productoEliminado.producto_id);
+      
+      if (productoOriginal) {
+        const nuevoStock = productoOriginal.stock + productoEliminado.cantidad;
+        actualizarStock(productoEliminado.producto_id, nuevoStock);
+      }
+      // TODO: No esta funcionando, no se actualiza el stock en la base de datos, ni en el carrito.
       // Eliminar el ítem del carrito con base en el índice.
       carrito.splice(index, 1);
+
       actualizarCarritoHTML();
       actualizarTotal();
       actualizarContadorProductos();
       guardarCarritoEnLocalStorage();
+      actualizarProductos();
     });
   });
 }
@@ -145,12 +161,22 @@ export function asignarEventosCantidad(cartContainer) {
     button.addEventListener('click', (e) => {
       const cartItem = e.target.closest('.cart-item');
       const productId = Number(cartItem.getAttribute('data-producto-id'));
-      // Llamamos a nuestro helper
-      incrementarCantidad(productId);
-      actualizarCarritoHTML(); // Re-renderizamos el carrito (o solo el ítem si optimizamos)
-      actualizarTotal();
-      actualizarContadorProductos();
-      guardarCarritoEnLocalStorage();
+      const productos = getProductos();
+      const productoOriginal = productos.find(p => p.id === productId);
+
+      if (productoOriginal && productoOriginal.stock > 0) {
+        // Reducimos el stock en 1
+        actualizarStock(productId, productoOriginal.stock - 1);
+        incrementarCantidad(productId);
+
+        actualizarCarritoHTML();
+        actualizarTotal();
+        actualizarContadorProductos();
+        guardarCarritoEnLocalStorage();
+        actualizarProductos(); // actualiza vista tarjetas
+      } else {
+        alert("Stock insuficiente.");
+      }
     });
   });
 
@@ -158,11 +184,21 @@ export function asignarEventosCantidad(cartContainer) {
     button.addEventListener('click', (e) => {
       const cartItem = e.target.closest('.cart-item');
       const productId = Number(cartItem.getAttribute('data-producto-id'));
-      disminuirCantidad(productId);
-      actualizarCarritoHTML();
-      actualizarTotal();
-      actualizarContadorProductos();
-      guardarCarritoEnLocalStorage();
+      const productos = getProductos();
+      const productoOriginal = productos.find(p => p.id === productId);
+
+      // Solo devolvemos stock si se puede disminuir
+      const item = carrito.find(i => i.producto_id === productId);
+      if (item && item.cantidad > 1 && productoOriginal) {
+        actualizarStock(productId, productoOriginal.stock + 1);
+        disminuirCantidad(productId);
+
+        actualizarCarritoHTML();
+        actualizarTotal();
+        actualizarContadorProductos();
+        guardarCarritoEnLocalStorage();
+        actualizarProductos();
+      }
     });
   });
 
@@ -171,11 +207,32 @@ export function asignarEventosCantidad(cartContainer) {
       const nuevaCantidad = Number(e.target.value);
       const cartItem = e.target.closest('.cart-item');
       const productId = Number(cartItem.getAttribute('data-producto-id'));
-      actualizarCantidad(productId, nuevaCantidad);
+
+      const productos = getProductos();
+      const productoOriginal = productos.find(p => p.id === productId);
+      const item = carrito.find(i => i.producto_id === productId);
+
+      if (!productoOriginal || !item) return;
+
+      const diferencia = nuevaCantidad - item.cantidad;
+
+      if (diferencia > 0 && productoOriginal.stock >= diferencia) {
+        actualizarCantidad(productId, nuevaCantidad);
+        actualizarStock(productId, productoOriginal.stock - diferencia);
+      } else if (diferencia < 0) {
+        actualizarCantidad(productId, nuevaCantidad);
+        actualizarStock(productId, productoOriginal.stock + Math.abs(diferencia));
+      } else if (diferencia > 0 && productoOriginal.stock < diferencia) {
+        alert("Stock insuficiente para la cantidad solicitada.");
+        input.value = item.cantidad; // Revertimos visualmente
+        return;
+      }
+
       actualizarCarritoHTML();
       actualizarTotal();
       actualizarContadorProductos();
       guardarCarritoEnLocalStorage();
+      actualizarProductos();
     });
   });
 }
@@ -295,6 +352,7 @@ export function asignarEventoReinicioCarrito() {
  * @param {Number} productId - ID del producto a agregar.
  */
 export function agregarProductoAlCarrito(productId) {
+  const productos = getProductos();
   const productoOriginal = productos.find(p => p.id === productId);
   if (!productoOriginal) {
     alert("Producto no encontrado.");
@@ -306,11 +364,14 @@ export function agregarProductoAlCarrito(productId) {
     // Aumentar cantidad si ya está en carrito (validando contra stock)
     if (itemExistente.cantidad < productoOriginal.stock) {
       itemExistente.cantidad += 1;
+      itemExistente.stock -= 1;
+      actualizarStock(productId, productoOriginal.stock - 1);
     } else {
       alert("No hay más stock disponible para este producto.");
     }
   } else {
     // Agregar nuevo ítem al carrito
+    actualizarStock(productId, productoOriginal.stock - 1);
     carrito.push({
       producto_id: productoOriginal.id,
       nombre: productoOriginal.nombre,
@@ -321,6 +382,7 @@ export function agregarProductoAlCarrito(productId) {
     });
   }
 
+  cargarProductos();
   actualizarCarritoHTML();
   actualizarTotal();
   actualizarContadorProductos();

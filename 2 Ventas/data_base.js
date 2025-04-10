@@ -9,6 +9,17 @@ export const productos = [
   { id: 7, nombre: 'Globo Lápiz', codigo: 'GL001', categoria: 'Fiesta', stock: 200, stockMinimo: 10, precioUnitario: 15.00, precioPorMayor: 13.00, precioPreferencial: 14.00, costoAdquisicion: 10.00, descripcion: 'Globo en forma de lápiz para eventos', foto: 'https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/tottusPE/42410375_1/w=1500,h=1500,fit=pad' }
 ];
 
+export function getProductos() {
+  return productos;
+}
+
+export function actualizarStock(productId, nuevoStock) {
+  const producto = productos.find(p => p.id === productId);
+  if (producto) {
+    producto.stock = nuevoStock;
+  }
+}
+
 // Datos de clientes
 export const clientes = [
   { id: 1, nombre: 'Carlos Torrez', telefono: '70123456', documentoIdentidad: '4587621', tipoCliente: 'regular', email: 'carlos@gmail.com', direccion: 'Av. América #123' },
