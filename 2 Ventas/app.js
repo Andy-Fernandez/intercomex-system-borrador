@@ -36,10 +36,6 @@ async function loadHTML() {
     cargarProductos(productsContainer),
     productoCarrito(cartContainer)
   ]);
-
-  // Asignar eventos de eliminación a los botones encontrados
-  const removeButtons = document.querySelectorAll('.remove-item-button');
-  asignarEventosDeEliminacion(removeButtons);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

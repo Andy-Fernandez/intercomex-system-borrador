@@ -289,3 +289,40 @@ export function asignarEventoReinicioCarrito() {
     });
   }
 }
+
+/**
+ * Agrega un producto al carrito, o aumenta su cantidad si ya existe.
+ * @param {Number} productId - ID del producto a agregar.
+ */
+export function agregarProductoAlCarrito(productId) {
+  const productoOriginal = productos.find(p => p.id === productId);
+  if (!productoOriginal) {
+    alert("Producto no encontrado.");
+    return;
+  }
+
+  const itemExistente = carrito.find(item => item.producto_id === productId);
+  if (itemExistente) {
+    // Aumentar cantidad si ya está en carrito (validando contra stock)
+    if (itemExistente.cantidad < productoOriginal.stock) {
+      itemExistente.cantidad += 1;
+    } else {
+      alert("No hay más stock disponible para este producto.");
+    }
+  } else {
+    // Agregar nuevo ítem al carrito
+    carrito.push({
+      producto_id: productoOriginal.id,
+      nombre: productoOriginal.nombre,
+      precio: productoOriginal.precioUnitario,
+      cantidad: 1,
+      foto: productoOriginal.foto,
+      stock: productoOriginal.stock
+    });
+  }
+
+  actualizarCarritoHTML();
+  actualizarTotal();
+  actualizarContadorProductos();
+  guardarCarritoEnLocalStorage();
+}
